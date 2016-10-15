@@ -3,12 +3,15 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+	public FirstPersonController playerPrefab;
+	private FirstPersonController playerInstance;
+
 	public Maze mazePrefab;
 	private Maze mazeInstance;
 
 	// Use this for initialization
 	void Start () {
-		BeginGame ();
+		StartCoroutine(BeginGame ());
 	}
 	
 	// Update is called once per frame
@@ -18,14 +21,22 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	private void BeginGame() {
-		mazeInstance = Instantiate (mazePrefab);
-		StartCoroutine(mazeInstance.Generate ());
+	private IEnumerator BeginGame() {
+		mazeInstance = Instantiate (mazePrefab) as Maze;
+		yield return StartCoroutine(mazeInstance.Generate ());
+		playerInstance = Instantiate (playerPrefab) as FirstPersonController;
+		playerInstance.SetLocation (mazeInstance.GetCell (mazeInstance.RandomCoordinates));
 	}
 
 	private void RestartGame() {
 		StopAllCoroutines ();
 		Destroy (mazeInstance.gameObject);
-		BeginGame ();
+		//BeginGame ();
+
+		if (playerInstance != null) {
+			Destroy (playerInstance.gameObject);
+		}
+
+		StartCoroutine (BeginGame ());
 	}
 }
