@@ -3,8 +3,11 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
-	public FirstPersonController playerPrefab;
-	private FirstPersonController playerInstance;
+	/*public FirstPersonController playerPrefab;
+	private FirstPersonController playerInstance;*/
+
+	public OVRPlayerController playerPrefab;
+	private OVRPlayerController playerInstance;
 
 	public Maze mazePrefab;
 	private Maze mazeInstance;
@@ -24,7 +27,7 @@ public class GameManager : MonoBehaviour {
 	private IEnumerator BeginGame() {
 		mazeInstance = Instantiate (mazePrefab) as Maze;
 		yield return StartCoroutine(mazeInstance.Generate ());
-		playerInstance = Instantiate (playerPrefab) as FirstPersonController;
+		playerInstance = Instantiate (playerPrefab) as OVRPlayerController;
 		playerInstance.SetLocation (mazeInstance.GetCell (mazeInstance.RandomCoordinates));
 	}
 
