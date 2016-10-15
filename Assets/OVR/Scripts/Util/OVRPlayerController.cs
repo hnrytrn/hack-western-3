@@ -93,6 +93,7 @@ public class OVRPlayerController : MonoBehaviour
 	private bool prevHatLeft = false;
 	private bool prevHatRight = false;
 	private float SimulationRate = 60f;
+	private MazeCell currentCell;
 
 	void Start()
 	{
@@ -217,6 +218,10 @@ public class OVRPlayerController : MonoBehaviour
 			MoveThrottle += (actualXZ - predictedXZ) / (SimulationRate * Time.deltaTime);
 	}
 
+	public void SetLocation (MazeCell cell) {
+		currentCell = cell;
+		transform.localPosition = cell.transform.localPosition;
+	}
 	public virtual void UpdateMovement()
 	{
 		if (HaltUpdateMovement)
