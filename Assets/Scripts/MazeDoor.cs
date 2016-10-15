@@ -2,7 +2,7 @@
 
 public class MazeDoor : MazePassage {
 
-	public Transform hinge;
+	private Transform hinge;
 
 	private MazeDoor OtherSideOfDoor {
 		get {
@@ -14,10 +14,10 @@ public class MazeDoor : MazePassage {
 		base.Initialize(primary, other, direction);
 		if (OtherSideOfDoor != null) {
 			isMirrored = true;
-			hinge.localScale = new Vector3(-1f, 1f, 1f);
-			Vector3 p = hinge.localPosition;
-			p.x = -p.x;
-			hinge.localPosition = p;
+			//hinge.localScale = new Vector3(-1f, 1f, 1f);
+			//Vector3 p = hinge.localPosition;
+			//p.x = -p.x;
+			//hinge.localPosition = p;
 		}
 		for (int i = 0; i < transform.childCount; i++) {
 			Transform child = transform.GetChild(i);
