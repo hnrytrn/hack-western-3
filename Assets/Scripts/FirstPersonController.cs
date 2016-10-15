@@ -11,6 +11,8 @@ public class FirstPersonController : MonoBehaviour {
 	private float verticalRot = 0;
 	private float yVelocity = 0;
 
+	private MazeCell currentCell;
+
 	// Use this for initialization
 	void Start () {
 		Cursor.lockState = CursorLockMode.Locked;
@@ -41,5 +43,10 @@ public class FirstPersonController : MonoBehaviour {
 		CharacterController cc = GetComponent<CharacterController> ();
 		cc.Move (speed * Time.deltaTime);
 
+	}
+
+	public void SetLocation (MazeCell cell) {
+		currentCell = cell;
+		transform.localPosition = cell.transform.localPosition;
 	}
 }
