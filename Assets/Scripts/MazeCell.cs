@@ -45,4 +45,16 @@ public class MazeCell : MonoBehaviour {
 		edges[(int)direction] = edge;
 		initializedEdgeCount += 1;
 	}
+
+	public void OnPlayerEntered () {
+		for (int i = 0; i < edges.Length; i++) {
+			edges[i].OnPlayerEntered();
+		}
+	}
+
+	public void OnPlayerExited () {
+		for (int i = 0; i < edges.Length; i++) {
+			edges[i].OnPlayerExited();
+		}
+	}
 }
