@@ -17,6 +17,19 @@ public class Maze : MonoBehaviour {
 
 	public MazeRoomSettings[] roomSettings;
 
+	private List<MazeRoom> rooms = new List<MazeRoom>();
+
+	private MazeRoom CreateRoom (int indexToExclude) {
+		MazeRoom newRoom = ScriptableObject.CreateInstance<MazeRoom>();
+		newRoom.settingsIndex = Random.Range(0, roomSettings.Length);
+		if (newRoom.settingsIndex == indexToExclude) {
+			newRoom.settingsIndex = (newRoom.settingsIndex + 1) % roomSettings.Length;
+		}
+		newRoom.settings = roomSettings[newRoom.settingsIndex];
+		rooms.Add(newRoom);
+		return newRoom;
+	}
+
 	public IntVector2 RandomCoordinates {
 		get {
 			return new IntVector2(Random.Range(0, size.x), Random.Range(0, size.z));
@@ -43,7 +56,36 @@ public class Maze : MonoBehaviour {
 	}
 
 	private void DoFirstGenerationStep (List<MazeCell> activeCells) {
-		activeCells.Add(CreateCell(RandomCoordinates));
+		MazeCell newCell = CreateCell(RandomCoordinates);
+		newCell.Initialize(CreateRoom(-1));
+		activeCells.Add(newCell);
+	}
+
+	private void CreatePassage (MazeCell cell, MazeCell otherCell, MazeDirection direction) {
+		MazePassage prefab = Random.value < doorProbability ? doorPrefab : passagePrefab;
+		MazePassage passage = Instantiate(prefab) as MazePassage;
+		passage.Initialize(cell, otherCell, direction);
+		passage = Instantiate(prefab) as MazePassage;
+		if (passage is MazeDoor) {
+			otherCell.Initialize(CreateRoom(cell.room.settingsIndex));
+		}
+		else {
+			otherCell.Initialize(cell.room);
+		}
+		passage.Initialize(otherCell, cell, direction.GetOpposite());
+	}
+
+	private void CreatePassageInSameRoom (MazeCell cell, MazeCell otherCell, MazeDirection direction) {
+		MazePassage passage = Instantiate(passagePrefab) as MazePassage;
+		passage.Initialize(cell, otherCell, direction);
+		passage = Instantiate(passagePrefab) as MazePassage;
+		passage.Initialize(otherCell, cell, direction.GetOpposite());
+		if (cell.room != otherCell.room) {
+			MazeRoom roomToAssimilate = otherCell.room;
+			cell.room.Assimilate(roomToAssimilate);
+			rooms.Remove(roomToAssimilate);
+			Destroy(roomToAssimilate);
+		}
 	}
 
 	private void DoNextGenerationStep (List<MazeCell> activeCells) {
@@ -62,6 +104,9 @@ public class Maze : MonoBehaviour {
 				CreatePassage(currentCell, neighbor, direction);
 				activeCells.Add(neighbor);
 			}
+			else if (currentCell.room.settingsIndex == neighbor.room.settingsIndex) {
+				CreatePassageInSameRoom(currentCell, neighbor, direction);
+			}
 			else {
 				CreateWall(currentCell, neighbor, direction);
 				// No longer remove the cell here.
@@ -77,14 +122,6 @@ public class Maze : MonoBehaviour {
 
 	[Range(0f, 1f)]
 	public float doorProbability;
-
-	private void CreatePassage (MazeCell cell, MazeCell otherCell, MazeDirection direction) {
-		MazePassage prefab = Random.value < doorProbability ? doorPrefab : passagePrefab;
-		MazePassage passage = Instantiate(prefab) as MazePassage;
-		passage.Initialize(cell, otherCell, direction);
-		passage = Instantiate(prefab) as MazePassage;
-		passage.Initialize(otherCell, cell, direction.GetOpposite());
-	}
 
 	private void CreateWall (MazeCell cell, MazeCell otherCell, MazeDirection direction) {
 		MazeWall wall = Instantiate(wallPrefab) as MazeWall;
