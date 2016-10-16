@@ -13,7 +13,7 @@ public class Attack : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        GameObject.FindGameObjectWithTag("player1").transform.Rotate(Vector3.up, 180f);
     }
 
     // Update is called once per frame
@@ -29,7 +29,7 @@ public class Attack : MonoBehaviour
         Vector3 fwd = transform.TransformDirection(Vector3.forward);
 
 
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K)|| Input.GetKeyDown("joystick button 3"))
         {
 
             Debug.Log("attack");

@@ -39,9 +39,7 @@ public class GameManager : MonoBehaviour {
 
 
 
-
-
-		if (Input.GetKeyDown ("joystick button 3")) {
+        if (Input.GetKeyDown ("joystick button 3")) {
 			RestartGame ();
 		}
 
@@ -113,12 +111,9 @@ public class GameManager : MonoBehaviour {
             m3.transform.position = temp;
         }
 
+
+        
     }
 
 
-    void Attack()
-    {
-       
-
-    }
 }
