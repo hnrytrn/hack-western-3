@@ -17,19 +17,35 @@ public class GameManager : MonoBehaviour {
 
 	public Maze mazePrefab;
 	private Maze mazeInstance;
+    public float bedUp;
+    public float z1Up;
+    public float z2Up;
+    public float sUp;
 
-	// Use this for initialization
-	void Start () {
+
+
+    // Use this for initialization
+    void Start () {
 		StartCoroutine(BeginGame ());
 		scaryInstance = scaryPrefab;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetKeyDown (KeyCode.Space)) {
+
+
+       
+
+
+    }
+
+    // Update is called once per frame
+    void Update () {
+		if (Input.GetKeyDown ("joystick button 3")) {
 			RestartGame ();
 		}
-	}
+
+        if (Input.GetKeyDown("joystick button 1"))
+        {
+            Attack();
+        }
+    }
 
 	private IEnumerator BeginGame() {
 		mazeInstance = Instantiate (mazePrefab) as Maze;
@@ -59,5 +75,46 @@ public class GameManager : MonoBehaviour {
 			scaryInstance[index] = Instantiate (scaryPrefab[index]) as Spawner;
 			scaryInstance[index].SetLocation (mazeInstance.GetCell (mazeInstance.RandomCoordinates));
 		}
-	}
+
+
+        Vector3 temp;
+        var beds = GameObject.FindGameObjectsWithTag("bed");
+        var m1s = GameObject.FindGameObjectsWithTag("m1");
+        var m2s = GameObject.FindGameObjectsWithTag("m2");
+        var m3s = GameObject.FindGameObjectsWithTag("m3");
+
+        foreach (GameObject bed in beds)
+        {
+            temp = bed.transform.position;
+            temp.y = temp.y + bedUp;
+            bed.transform.position = temp;
+        }
+
+        foreach (GameObject m1 in m1s)
+        {
+            temp = m1.transform.position;
+            temp.y = temp.y + z1Up;
+            m1.transform.position = temp;
+        }
+        foreach (GameObject m2 in m2s)
+        {
+            temp = m2.transform.position;
+            temp.y = temp.y + z2Up;
+            m2.transform.position = temp;
+        }
+        foreach (GameObject m3 in m3s)
+        {
+            temp = m3.transform.position;
+            temp.y = temp.y + sUp;
+            m3.transform.position = temp;
+        }
+
+    }
+
+
+    void Attack()
+    {
+       
+
+    }
 }
