@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour {
 	public OVRPlayerController playerPrefab;
 	private OVRPlayerController playerInstance;
 
+	public Trophy trophyPrefab;
+	private Trophy trophyInstance;
+
 	public Spawner [] scaryPrefab;
 	private Spawner [] scaryInstance;
 
@@ -33,7 +36,9 @@ public class GameManager : MonoBehaviour {
 		yield return StartCoroutine(mazeInstance.Generate ());
 		SpawnHorror (30);
 		playerInstance = Instantiate (playerPrefab) as OVRPlayerController;
-		playerInstance.SetLocation (mazeInstance.GetCell (mazeInstance.RandomCoordinates));
+		playerInstance.SetLocation (mazeInstance.GetCell (new IntVector2 (0, 19)));
+		trophyInstance = Instantiate (trophyPrefab) as Trophy;
+		trophyInstance.SetLocation (mazeInstance.GetCell (new IntVector2 (19, 0)));
 	}
 
 	private void RestartGame() {
