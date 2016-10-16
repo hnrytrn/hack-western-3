@@ -16,10 +16,12 @@ public class Spawner : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-
-        Vector3 lookAtPosition = player.transform.position;
-        lookAtPosition.y = transform.position.y;
-        this.gameObject.transform.LookAt(lookAtPosition);
+        if (this.tag != "bed")
+        {
+            Vector3 lookAtPosition = player.transform.position;
+            lookAtPosition.y = transform.position.y;
+            this.gameObject.transform.LookAt(lookAtPosition);
+        }
 	}
 
 	void FixedUpdate(){
