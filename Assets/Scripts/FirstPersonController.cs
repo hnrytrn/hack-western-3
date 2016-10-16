@@ -33,7 +33,7 @@ public class FirstPersonController : MonoBehaviour {
 
 		//character movement
 		float forwardSpeed = Input.GetAxis ("Vertical") * walkSpeed;
-		float sideSpeed = Input.GetAxis ("Horizontal") * walkSpeed;
+		float sideSpeed = Input.GetAxis ("Horizontal") * 2 * walkSpeed;
 
 		yVelocity += Physics.gravity.y * Time.deltaTime;
 
