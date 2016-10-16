@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 
 	public OVRPlayerController playerPrefab;
 	private OVRPlayerController playerInstance;
-
+    public Light lt;
 	public Trophy trophyPrefab;
 	private Trophy trophyInstance;
 
@@ -71,6 +71,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void SpawnHorror(int limit){
+
+        lt.enabled = false;
+
 		for (int i = 0; i < limit; i++) {
 			int index = Random.Range (0, scaryPrefab.Length);
 			scaryInstance[index] = Instantiate (scaryPrefab[index]) as Spawner;
