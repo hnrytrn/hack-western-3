@@ -9,12 +9,16 @@ public class GameManager : MonoBehaviour {
 	public OVRPlayerController playerPrefab;
 	private OVRPlayerController playerInstance;
 
+	public Spawner [] scaryPrefab;
+	private Spawner [] scaryInstance;
+
 	public Maze mazePrefab;
 	private Maze mazeInstance;
 
 	// Use this for initialization
 	void Start () {
 		StartCoroutine(BeginGame ());
+		scaryInstance = scaryPrefab;
 	}
 	
 	// Update is called once per frame
@@ -27,6 +31,7 @@ public class GameManager : MonoBehaviour {
 	private IEnumerator BeginGame() {
 		mazeInstance = Instantiate (mazePrefab) as Maze;
 		yield return StartCoroutine(mazeInstance.Generate ());
+		SpawnHorror (30);
 		playerInstance = Instantiate (playerPrefab) as OVRPlayerController;
 		playerInstance.SetLocation (mazeInstance.GetCell (mazeInstance.RandomCoordinates));
 	}
@@ -41,5 +46,13 @@ public class GameManager : MonoBehaviour {
 		}
 
 		StartCoroutine (BeginGame ());
+	}
+
+	private void SpawnHorror(int limit){
+		for (int i = 0; i < limit; i++) {
+			int index = Random.Range (0, scaryPrefab.Length);
+			scaryInstance[index] = Instantiate (scaryPrefab[index]) as Spawner;
+			scaryInstance[index].SetLocation (mazeInstance.GetCell (mazeInstance.RandomCoordinates));
+		}
 	}
 }
