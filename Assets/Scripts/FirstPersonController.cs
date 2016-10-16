@@ -20,9 +20,11 @@ public class FirstPersonController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+        
 
-		//character rotation
-		float rotateX = Input.GetAxis("Mouse X") * sensitivity;
+
+        //character rotation
+        float rotateX = Input.GetAxis("Mouse X") * sensitivity;
 		transform.Rotate (0, rotateX, 0);
 
 		//camera rotation (up/down)

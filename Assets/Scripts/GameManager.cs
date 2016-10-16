@@ -28,23 +28,24 @@ public class GameManager : MonoBehaviour {
     void Start () {
 		StartCoroutine(BeginGame ());
 		scaryInstance = scaryPrefab;
-
-
-       
-
-
     }
+    
+ 
 
     // Update is called once per frame
     void Update () {
+
+
+
+
+
+
+
 		if (Input.GetKeyDown ("joystick button 3")) {
 			RestartGame ();
 		}
 
-        if (Input.GetKeyDown("joystick button 1"))
-        {
-            Attack();
-        }
+        
     }
 
 	private IEnumerator BeginGame() {
